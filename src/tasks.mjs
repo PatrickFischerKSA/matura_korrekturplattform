@@ -29,10 +29,10 @@ export const TASKS = [
   },
   {
     id: "m4ab-lernen-ki",
-    title: "Klassenthema M4a/b: Lohnt sich Lernen ueberhaupt noch?",
+    title: "Thema 5 / Klassenthema M4a/b: Lohnt sich Lernen ueberhaupt noch?",
     textTypes: ["Eroerterung", "Essay", "Rede"],
     prompt:
-      "Im Zentrum steht die Frage, warum Menschen noch lernen sollen, wenn KI vieles schneller oder sprachlich besser kann. Erwartet wird eine differenzierte Auseinandersetzung mit Bildung, Eigenleistung, kognitivem Engagement, Bequemlichkeit, Selbststaendigkeit, Kompetenzerwerb und der Gefahr, Denken an Maschinen auszulagern.",
+      "Im Zentrum steht die Frage, warum Menschen noch lernen sollen, wenn KI vieles schneller oder sprachlich besser kann. Erwartet wird je nach gewaehlter Form eine Eroerterung, ein Essay oder eine Rede. Bewertet wird eine differenzierte Auseinandersetzung mit Bildung, Eigenleistung, kognitivem Engagement, Bequemlichkeit, Selbststaendigkeit, Kompetenzerwerb und der Gefahr, Denken an Maschinen auszulagern. Bei der Rede muessen Adressatenbezug, klarer Appell, rhetorische Gestaltung und muendliche Wirkung besonders beruecksichtigt werden.",
   },
   {
     id: "m4c-s4g-gedichtvergleich",
