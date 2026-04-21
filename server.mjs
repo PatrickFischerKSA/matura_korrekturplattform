@@ -8,7 +8,7 @@ import { TASKS } from "./src/tasks.mjs";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const publicDir = resolve(__dirname, "public");
-const host = process.env.HOST || "127.0.0.1";
+const host = process.env.HOST || (process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1");
 const port = Number(process.env.PORT || 3031);
 
 const MIME_TYPES = {
