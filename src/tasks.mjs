@@ -51,7 +51,7 @@ export const TASKS = [
   {
     id: "ks5-bleib-nicht-wie-du-bist",
     title: "Klassenthema KS5: «Bleib nicht, wie du bist» - wenn genug verdaechtig ist",
-    textTypes: ["Dialektische Eroerterung", "Essay", "Rede"],
+    textTypes: ["Rede", "Dialektische Eroerterung", "Essay"],
     prompt:
       "Ausgehend von Verena Kesslers «Gym» und Aussagen der Radweltmeisterin Marlen Reusser geht es um Fitnessstudio, Koerper, Leistungskultur, Sichtbarkeit, Selbstoptimierung, Anpassungsdruck und die Grenze zwischen Training als gutem Leben und Training als Zwang. Erwartet wird je nach gewaehlter Form eine dialektische Eroerterung, ein Essay oder eine Rede mit praeziser Bezugnahme auf die dargestellten Positionen. Bei der Rede muessen Adressatenbezug, klarer Appell, rhetorische Gestaltung und muendliche Wirkung besonders beruecksichtigt werden.",
   },
