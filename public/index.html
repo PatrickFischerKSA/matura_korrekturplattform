@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Matura-Korrekturplattform</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Deutsch Matura</p>
+            <h1>Korrekturplattform</h1>
+          </div>
+          <div class="status-pill" id="status">Bereit</div>
+        </header>
+
+        <section class="editor-grid">
+          <aside class="control-panel">
+            <label class="file-drop" for="docxInput">
+              <input id="docxInput" type="file" accept=".docx" />
+              <span class="file-icon">⬆</span>
+              <span>
+                <strong id="fileName">Word-Dokument</strong>
+                <small id="fileMeta">.docx hochladen</small>
+              </span>
+            </label>
+
+            <label>
+              Aufgabenstellung
+              <select id="taskSelect"></select>
+            </label>
+
+            <label>
+              Textsorte
+              <select id="textTypeSelect"></select>
+            </label>
+
+            <label>
+              Klassenstufe
+              <select id="levelSelect">
+                <option value="4">4. Gym / FMS</option>
+                <option value="3">3. Gym / FMS</option>
+                <option value="2">2. Gym / FMS</option>
+                <option value="1">1. Gym / FMS</option>
+              </select>
+            </label>
+
+            <label class="toggle-row">
+              <span>Korrekturprogramm</span>
+              <input id="correctionProgram" type="checkbox" checked />
+            </label>
+
+            <div class="metric-row">
+              <label>
+                Wörter
+                <input id="wordCount" type="number" min="1" step="1" value="0" />
+              </label>
+            </div>
+
+            <button class="primary" id="evaluateBtn">Streng korrigieren</button>
+            <button class="secondary" id="exportBtn" disabled>Kommentar als Word exportieren</button>
+          </aside>
+
+          <section class="essay-panel">
+            <div class="panel-heading">
+              <h2>Aufsatz</h2>
+              <span id="charCount">0 Zeichen</span>
+            </div>
+            <textarea id="essayText" spellcheck="false" placeholder="Aufsatztext"></textarea>
+          </section>
+
+          <section class="task-panel">
+            <div class="panel-heading">
+              <h2>Aufgabenbezug</h2>
+              <span id="selectedTaskBadge">Matura 2026</span>
+            </div>
+            <textarea id="taskPrompt"></textarea>
+          </section>
+        </section>
+      </section>
+
+      <section class="results-panel">
+        <div class="result-header">
+          <div>
+            <p class="eyebrow">Korrektur</p>
+            <h2>Kommentar und Note</h2>
+          </div>
+          <div class="final-grade" id="finalGrade">--</div>
+        </div>
+
+        <div class="grade-strip">
+          <div><span>Inhalt</span><strong id="gradeContent">--</strong></div>
+          <div><span>Aufbau</span><strong id="gradeStructure">--</strong></div>
+          <div><span>Stil</span><strong id="gradeStyle">--</strong></div>
+          <div><span>Sprache</span><strong id="gradeCorrectness">--</strong></div>
+        </div>
+
+        <div class="error-summary">
+          <div><span>Fehler</span><strong id="errorCount">--</strong></div>
+          <div><span>pro 200 Wörter</span><strong id="errorsPer200">--</strong></div>
+        </div>
+
+        <article class="comment-block" id="commentBlock">
+          <p>Die Korrektur erscheint hier nach der Auswertung.</p>
+        </article>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Kategorie</th>
+                <th>Fundstelle</th>
+                <th>Korrektur</th>
+                <th>Zählung</th>
+              </tr>
+            </thead>
+            <tbody id="errorTable">
+              <tr><td colspan="4">Keine Fehlerliste vorhanden.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

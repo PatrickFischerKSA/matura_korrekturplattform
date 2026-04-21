@@ -1,0 +1,18 @@
+{
+  "name": "matura-korrekturplattform",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Korrekturplattform fuer Deutsch-Maturaufsaetze mit DOCX-Upload, strenger KI-Beurteilung und Word-Export.",
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node --watch server.mjs",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "jszip": "^3.10.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
