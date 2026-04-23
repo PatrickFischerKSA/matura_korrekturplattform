@@ -9,9 +9,9 @@ export const TASKS = [
   {
     id: "thema-2-gute-alte-zeiten",
     title: "Thema 2: «Jetzt sind die guten alten Zeiten, nach denen wir uns in zehn Jahren zuruecksehnen.»",
-    textTypes: ["Lineare Eroerterung", "Dialektische Eroerterung", "Essay"],
+    textTypes: ["Lineare Eroerterung", "Dialektische Eroerterung", "Essay", "Rede"],
     prompt:
-      "Das Ustinov zugeschriebene Zitat soll differenziert entfaltet werden. Moeglich sind eine lineare Eroerterung zur kuenftigen Verklaerung der Gegenwart und zur bewussten Gestaltung des Jetzt, eine dialektische Eroerterung zu Chancen und Risiken von Nostalgie fuer Individuen und Schweizer Gesellschaft oder ein Essay ueber Erinnerung, Gegenwart, Zukunft, Zugehoerigkeit und Verantwortung.",
+      "Das Ustinov zugeschriebene Zitat soll differenziert entfaltet werden. Moeglich sind eine lineare Eroerterung zur kuenftigen Verklaerung der Gegenwart und zur bewussten Gestaltung des Jetzt, eine dialektische Eroerterung zu Chancen und Risiken von Nostalgie fuer Individuen und Schweizer Gesellschaft, ein Essay ueber Erinnerung, Gegenwart, Zukunft, Zugehoerigkeit und Verantwortung oder eine Rede. Bei der Rede muessen Adressatenbezug, klarer Appell, rhetorische Gestaltung und muendliche Wirkung besonders beruecksichtigt werden.",
   },
   {
     id: "thema-3-gerechtigkeit",

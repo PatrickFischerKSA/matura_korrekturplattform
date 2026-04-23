@@ -1,6 +1,6 @@
 import { calculateCorrectnessGrade, calculateFinalGrade, RUBRIC } from "./rubric.mjs";
 
-const SYSTEM_PROMPT = `Du bist ein sehr strenger Deutschlehrer mit 20 Jahren Berufserfahrung. Beurteile und benote einen Deutsch-Maturaufsatz nach den vorgegebenen Kriterien. Stimme deinen Kommentar exakt auf Aufgabenstellung und Textsorte ab. Zaehle alle sprachlichen Fehler, Kommafehler als halbe Fehler, und liste sie einzeln auf. Sei anspruchsvoll, sachlich, konkret und hilfreich.`;
+const SYSTEM_PROMPT = `Du bist ein sehr strenger Deutschlehrer mit 20 Jahren Berufserfahrung. Beurteile und benote einen Deutsch-Maturaufsatz nach den vorgegebenen Kriterien. Stimme deinen Kommentar exakt auf Aufgabenstellung und Textsorte ab. Zaehle fuer die sprachliche Korrektheit nur Orthografie-, Interpunktions- und Grammatikfehler; Kommafehler zaehlen als halbe Fehler. Ausdrucks-, Wortwahl-, Syntax- und Kohaesionsprobleme werden in der Stilnote beruecksichtigt und duerfen erlaeutert werden, duerfen aber nicht in die Fehlerzahl der sprachlichen Korrektheit eingehen. Sei anspruchsvoll, sachlich, konkret und hilfreich.`;
 
 export function buildEvaluationPrompt(input) {
   return `Aufgabenstellung:
@@ -20,9 +20,10 @@ Bewertungskriterien:
 Auftrag:
 1. Beurteile Inhalt, Aufbau und Stil streng mit Noten von 1 bis 6 in Viertelnoten.
 2. Stimme alle Kommentare sichtbar auf die Aufgabenstellung und die gewaehlte Textsorte ab.
-3. Zaehle saemtliche sprachlichen Fehler. Liste jeden Fehler einzeln mit Kategorie, Fundstelle, Korrektur, kurzer Erklaerung und Gewicht auf. Kommafehler erhalten Gewicht 0.5.
-4. Gib konkrete Ueberarbeitungshinweise.
-5. Antworte ausschliesslich als gueltiges JSON nach diesem Schema:
+3. Zaehle fuer die Note der sprachlichen Korrektheit ausschliesslich Orthografie-, Interpunktions- und Grammatikfehler. Liste diese Fehler einzeln mit Kategorie, Fundstelle, Korrektur, kurzer Erklaerung und Gewicht auf. Kommafehler erhalten Gewicht 0.5.
+4. Ausdrucks-, Wortwahl-, Syntax- und Kohaesionsprobleme gehoeren zur Stilnote. Du darfst sie in der Fehlerliste auffuehren, musst ihnen dann aber Gewicht 0 geben, damit sie nicht in die Grammatik-/Korrektheitsnote eingehen.
+5. Gib konkrete Ueberarbeitungshinweise.
+6. Antworte ausschliesslich als gueltiges JSON nach diesem Schema:
 {
   "summary": "kurzes Gesamturteil",
   "taskComment": "Kommentar zum Aufgabenbezug",
@@ -35,7 +36,7 @@ Auftrag:
     "overall": "Kommentar"
   },
   "errors": [
-    { "category": "Orthographie|Interpunktion|Grammatik|Syntax|Ausdruck|Kohäsion", "quote": "Originalstelle", "correction": "Korrektur", "explanation": "kurz", "weight": 1 }
+    { "category": "Orthografie|Interpunktion|Grammatik|Ausdruck|Wortwahl|Syntax|Kohaesion", "quote": "Originalstelle", "correction": "Korrektur", "explanation": "kurz", "weight": 1 }
   ],
   "strengths": ["..."],
   "revisions": ["..."]
@@ -171,7 +172,8 @@ function normalizeGrade(value) {
 
 function normalizeWeight(value) {
   const number = Number(value);
-  if (!Number.isFinite(number) || number <= 0) return 1;
+  if (!Number.isFinite(number)) return 1;
+  if (number <= 0) return 0;
   return Math.round(number * 2) / 2;
 }
 
