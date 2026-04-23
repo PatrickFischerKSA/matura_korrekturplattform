@@ -55,4 +55,32 @@ export const TASKS = [
     prompt:
       "Ausgehend von Verena Kesslers «Gym» und Aussagen der Radweltmeisterin Marlen Reusser geht es um Fitnessstudio, Koerper, Leistungskultur, Sichtbarkeit, Selbstoptimierung, Anpassungsdruck und die Grenze zwischen Training als gutem Leben und Training als Zwang. Erwartet wird je nach gewaehlter Form eine dialektische Eroerterung, ein Essay oder eine Rede mit praeziser Bezugnahme auf die dargestellten Positionen. Bei der Rede muessen Adressatenbezug, klarer Appell, rhetorische Gestaltung und muendliche Wirkung besonders beruecksichtigt werden.",
   },
+  {
+    id: "fms-2026-goethe-easy",
+    title: "FMS 2026 Thema 1: Goethe in «easy»?",
+    textTypes: ["Kommentar", "Offener Brief", "Dialektische Eroerterung"],
+    prompt:
+      "Ausgangspunkt ist die Debatte ueber vereinfachte Literaturklassiker im Unterricht. Behandelt werden sollen Chancen und Risiken sprachlich entschlackter Ausgaben von Werken wie Faust, Nathan der Weise oder Romeo und Julia und die Folgen fuer Bildungsanspruch, Sprache und kulturelle Vermittlung. Moeglich sind ein Kommentar mit klar begruendeter Position, ein offener Brief an die Bildungsdirektion oder eine dialektische Eroerterung mit Abwaegung beider Seiten.",
+  },
+  {
+    id: "fms-2026-fruehfranzoesisch",
+    title: "FMS 2026 Thema 2: Adieu Fruehfranzoesisch",
+    textTypes: ["Leserbrief", "Eroerterung", "Stellungnahme"],
+    prompt:
+      "Ausgangspunkt ist das Schwyzer Postulat, Franzoesisch erst auf der Sekundarstufe zu unterrichten. Erwartet wird eine differenzierte Auseinandersetzung mit Deutschniveau, Ueberforderung durch Fremdsprachen, der Bedeutung des Franzoesischen als Landessprache und der Rolle von Fruehfremdsprachen fuer Bildung, Gesellschaft und persoenliche Entwicklung. Moeglich sind ein Leserbrief, eine Eroerterung oder eine Stellungnahme in Form einer linearen Eroerterung.",
+  },
+  {
+    id: "fms-2026-aufnahmepruefung",
+    title: "FMS 2026 Thema 3: Aufnahmepruefung fuer die erste Klasse",
+    textTypes: ["Lineare Eroerterung", "Essay", "Rede"],
+    prompt:
+      "Ausgangspunkt sind politische Forderungen nach Sprachtests vor Schuleintritt, Vorbereitungsklassen und weiteren Massnahmen zur sprachlichen Integration. Erwartet wird eine reflektierte Auseinandersetzung mit Chancengleichheit, Integration, sprachlicher Foerderung und dem Vorschlag einer buergerlichen Partei. Moeglich sind eine lineare Eroerterung, ein Essay oder eine Rede fuer eine Gemeindeversammlung.",
+  },
+  {
+    id: "fms-2026-politische-einflussnahme",
+    title: "FMS 2026 Thema 4: Politische Einflussnahme auf die Bildung",
+    textTypes: ["Stellungnahme", "Offener Brief", "Essay"],
+    prompt:
+      "Ausgangspunkt ist die Frage, wie stark politische Parteien die Bildungspolitik praegen sollen. Thematisiert werden traditionell ausgerichteter Unterricht, Digitalisierung, Fruehfremdsprachen, integrativer Unterricht sowie die Frage, wer in Bildungsfragen Entscheidungskompetenz besitzen sollte. Moeglich sind eine Stellungnahme in Form einer linearen Eroerterung, ein offener Brief an einen Lehrerverband oder ein Essay ueber Schule in einer demokratischen Gesellschaft.",
+  },
 ];
