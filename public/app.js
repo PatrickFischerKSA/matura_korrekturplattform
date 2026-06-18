@@ -1,15 +1,19 @@
 const state = {
   tasks: [],
+  selectedGroup: "",
   selectedTask: null,
   fileName: "",
   evaluation: null,
 };
+
+const DEFAULT_TASK_GROUP = "Matura-Aufgaben 2026";
 
 const els = {
   status: document.querySelector("#status"),
   docxInput: document.querySelector("#docxInput"),
   fileName: document.querySelector("#fileName"),
   fileMeta: document.querySelector("#fileMeta"),
+  taskGroupSelect: document.querySelector("#taskGroupSelect"),
   taskSelect: document.querySelector("#taskSelect"),
   textTypeSelect: document.querySelector("#textTypeSelect"),
   levelSelect: document.querySelector("#levelSelect"),
@@ -42,6 +46,7 @@ async function init() {
 
 function bindEvents() {
   els.docxInput.addEventListener("change", handleFileUpload);
+  els.taskGroupSelect.addEventListener("change", selectTaskGroup);
   els.taskSelect.addEventListener("change", selectTask);
   els.essayText.addEventListener("input", updateTextStats);
   els.evaluateBtn.addEventListener("click", evaluate);
@@ -51,20 +56,46 @@ function bindEvents() {
 async function loadTasks() {
   const payload = await requestJson("/api/tasks");
   state.tasks = payload.tasks || [];
-  els.taskSelect.innerHTML = state.tasks
-    .map((task) => `<option value="${escapeHtml(task.id)}">${escapeHtml(task.title)}</option>`)
+  const groups = [...new Set(state.tasks.map(getTaskGroup))];
+  els.taskGroupSelect.innerHTML = groups
+    .map((group) => `<option value="${escapeHtml(group)}">${escapeHtml(group)}</option>`)
     .join("");
+  state.selectedGroup = groups[0] || DEFAULT_TASK_GROUP;
+  els.taskGroupSelect.value = state.selectedGroup;
+  renderTaskOptions();
   selectTask();
 }
 
+function selectTaskGroup() {
+  state.selectedGroup = els.taskGroupSelect.value;
+  renderTaskOptions();
+  selectTask();
+}
+
+function renderTaskOptions() {
+  const tasks = getVisibleTasks();
+  els.taskSelect.innerHTML = tasks
+    .map((task) => `<option value="${escapeHtml(task.id)}">${escapeHtml(task.title)}</option>`)
+    .join("");
+}
+
 function selectTask() {
-  state.selectedTask = state.tasks.find((task) => task.id === els.taskSelect.value) || state.tasks[0];
+  const visibleTasks = getVisibleTasks();
+  state.selectedTask = visibleTasks.find((task) => task.id === els.taskSelect.value) || visibleTasks[0];
   if (!state.selectedTask) return;
   els.taskPrompt.value = state.selectedTask.prompt;
   els.selectedTaskBadge.textContent = state.selectedTask.title;
   els.textTypeSelect.innerHTML = (state.selectedTask.textTypes || ["Aufsatz"])
     .map((type) => `<option>${escapeHtml(type)}</option>`)
     .join("");
+}
+
+function getVisibleTasks() {
+  return state.tasks.filter((task) => getTaskGroup(task) === state.selectedGroup);
+}
+
+function getTaskGroup(task) {
+  return task.group || DEFAULT_TASK_GROUP;
 }
 
 async function handleFileUpload(event) {

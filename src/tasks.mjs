@@ -83,4 +83,52 @@ export const TASKS = [
     prompt:
       "Ausgangspunkt ist die Frage, wie stark politische Parteien die Bildungspolitik praegen sollen. Thematisiert werden traditionell ausgerichteter Unterricht, Digitalisierung, Fruehfremdsprachen, integrativer Unterricht sowie die Frage, wer in Bildungsfragen Entscheidungskompetenz besitzen sollte. Moeglich sind eine Stellungnahme in Form einer linearen Eroerterung, ein offener Brief an einen Lehrerverband oder ein Essay ueber Schule in einer demokratischen Gesellschaft.",
   },
+  {
+    id: "fks-2026-marita",
+    group: "Maturaprüfungen Freie Katholische Schule",
+    title: "FKS Matura 2026 Thema 1: Interpretation eines epischen Textes",
+    textTypes: ["Interpretation eines epischen Textes"],
+    prompt:
+      "Grundlage ist Selim Oezdogans epischer Text «Marita» (2003). Erwartet wird eine Interpretation des Textes. Die Form und Sprache sollen analysiert werden. In der Interpretation muessen insbesondere folgende Fragen beantwortet werden: Wie wird Marita durch die Erzaehlinstanz charakterisiert? Welche Eigenschaften werden ihr zugeschrieben? Wie veraendert sich das Bild, das sich die Erzaehlinstanz von Marita macht, im Verlauf des Gespraechs? Inwieweit bleibt Marita eine Projektionsflaeche fuer die eigenen Sehnsuechte der Erzaehlinstanz?",
+  },
+  {
+    id: "fks-2026-schimmelreiter",
+    group: "Maturaprüfungen Freie Katholische Schule",
+    title: "FKS Matura 2026 Thema 2: Essay I - Fortschritt und Aberglauben",
+    textTypes: ["Essay"],
+    prompt:
+      "Ausgangspunkt ist Theodor Storms Novelle «Der Schimmelreiter» und das darin zentrale Spannungsfeld zwischen Fortschritt und Aberglauben. Hauke Haien steht mit seinem Deichbau sinnbildlich fuer den Fortschritt, waehrend die Dorfbewohner Vertreter des Aberglaubens sind. Erwartet wird ein Essay, der dieses Spannungsfeld ausgehend von der Novelle thematisiert und ausfuehrt, welche Funktion Fortschritt und Aberglaube in der Gegenwart haben.",
+  },
+  {
+    id: "fks-2026-demokratie",
+    group: "Maturaprüfungen Freie Katholische Schule",
+    title: "FKS Matura 2026 Thema 3: Freie Eroerterung I - Demokratie",
+    textTypes: ["Dialektische Eroerterung", "Freie Eroerterung"],
+    prompt:
+      "Ausgangspunkt ist Francis Fukuyamas These vom «Ende der Geschichte» Anfang der 1990er Jahre und die heutige Ernuechterung angesichts von Populismus, Erosion staatlicher Institutionen und dem Aufstieg autoritaerer Systeme. Erwartet wird eine dialektische Eroerterung der Vor- und Nachteile der Demokratie. Zudem sollen Loesungsansaetze entwickelt werden, wie die Demokratie vor dem Untergang gerettet werden kann.",
+  },
+  {
+    id: "fks-2026-leben-sinn",
+    group: "Maturaprüfungen Freie Katholische Schule",
+    title: "FKS Matura 2026 Thema 4: Essay II - Das Leben lieben",
+    textTypes: ["Essay"],
+    prompt:
+      "Ausgangspunkt ist Fjodor Dostojewskis Roman «Die Brueder Karamasow» und die Frage, ob man das Leben mehr lieben soll als seinen Sinn. Aljoscha sagt: «Ich finde, jeder Mensch auf der Welt sollte vor allem anderen das Leben lieben.» Iwan entgegnet: «Das Leben mehr lieben als seinen Sinn?» Erwartet wird ein Essay, der sich mit der Frage auseinandersetzt, was es bedeuten kann, das Leben zu lieben, ob ein Sinnverstaendnis notwendig ist und ob man das Leben auch ohne klare Antworten als wertvoll annehmen kann. Eigene Gedanken, Erfahrungen sowie Beispiele aus Literatur, Philosophie oder Alltag koennen einbezogen werden.",
+  },
+  {
+    id: "fks-2026-globalisierung",
+    group: "Maturaprüfungen Freie Katholische Schule",
+    title: "FKS Matura 2026 Thema 5: Freie Eroerterung II - Globale Verantwortung",
+    textTypes: ["Eroerterung", "Freie Eroerterung"],
+    prompt:
+      "Ausgangspunkt ist ein Kofi Annan zugeschriebenes Zitat zur Globalisierung als Kraft fuer das Gute, wenn sie als Verantwortung verstanden wird: global denken und lokal handeln. Erwartet wird eine Eroerterung zur Frage, ob wir Verantwortung fuer Menschen und Lebensbedingungen in anderen Teilen der Welt tragen. Dabei sollen unterschiedliche Aspekte wie Konsumverhalten, wirtschaftliche Zusammenhaenge, Umweltfragen oder soziale Gerechtigkeit beruecksichtigt werden. Zu eroertern ist, in welchem Ausmass Einzelne in einer globalisierten Welt Verantwortung uebernehmen koennen oder sollen und wo Grenzen dieser Verantwortung liegen. Eine eigene begruendete Position mit Gegenargumenten wird erwartet.",
+  },
+  {
+    id: "fks-2026-abendlied",
+    group: "Maturaprüfungen Freie Katholische Schule",
+    title: "FKS Matura 2026 Thema 6: Gedichtinterpretation - Abendlied",
+    textTypes: ["Gedichtinterpretation"],
+    prompt:
+      "Grundlage ist Matthias Claudius' Gedicht «Abendlied» (1779). Erwartet wird eine Interpretation des Gedichts. Die Form und Sprache sollen analysiert werden. In der Interpretation muessen insbesondere folgende Fragen beantwortet werden: Wie wird die Situation des Abends dargestellt und welche Bedeutung hat sie fuer den Menschen? Welche Haltung des lyrischen Ichs gegenueber Leben, Natur und Gott kommt zum Ausdruck? Welche zentrale Aussage ueber das menschliche Leben vermittelt das Gedicht? Welche uebergeordnete Botschaft oder Lebenshaltung laesst sich erschliessen, und inwiefern lassen sich Parallelen zu barocken Vorstellungen erkennen? Welche Bedeutung haben diese Gedanken fuer den heutigen Menschen?",
+  },
 ];

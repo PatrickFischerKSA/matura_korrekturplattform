@@ -1,13 +1,16 @@
 import { calculateCorrectnessGrade, calculateFinalGrade, RUBRIC } from "./rubric.mjs";
+import { getTextTypeGuidance } from "./textTypes.mjs";
 
 const SYSTEM_PROMPT = `Du bist ein sehr strenger Deutschlehrer mit 20 Jahren Berufserfahrung. Beurteile und benote einen Deutsch-Maturaufsatz nach den vorgegebenen Kriterien. Stimme deinen Kommentar exakt auf Aufgabenstellung und Textsorte ab. Zaehle fuer die sprachliche Korrektheit nur Orthografie-, Interpunktions- und Grammatikfehler; Kommafehler zaehlen als halbe Fehler. Ausdrucks-, Wortwahl-, Syntax- und Kohaesionsprobleme werden in der Stilnote beruecksichtigt und duerfen erlaeutert werden, duerfen aber nicht in die Fehlerzahl der sprachlichen Korrektheit eingehen. Sei anspruchsvoll, sachlich, konkret und hilfreich.`;
 
 export function buildEvaluationPrompt(input) {
+  const textTypeGuidance = getTextTypeGuidance(input.textType);
   return `Aufgabenstellung:
 ${input.taskTitle}
 ${input.taskPrompt}
 
 Textsorte: ${input.textType || "nicht angegeben"}
+${textTypeGuidance ? `\n${textTypeGuidance}\n` : ""}
 Korrekturprogramm verwendet: ${input.correctionProgram ? "ja" : "nein"}
 Klassenstufe: ${input.level}. Gym/FMS
 
