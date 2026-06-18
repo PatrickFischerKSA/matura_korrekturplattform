@@ -21,6 +21,11 @@ const MIME_TYPES = {
 
 const server = createServer(async (req, res) => {
   try {
+    applyCors(req, res);
+    if (req.method === "OPTIONS") {
+      res.writeHead(204);
+      return res.end();
+    }
     const url = new URL(req.url || "/", `http://${req.headers.host}`);
     if (isReadRequest(req) && url.pathname === "/healthz") {
       return sendJson(res, { ok: true });
@@ -153,6 +158,29 @@ function sendJson(res, payload, status = 200) {
 
 function isReadRequest(req) {
   return req.method === "GET" || req.method === "HEAD";
+}
+
+function applyCors(req, res) {
+  const origin = req.headers.origin;
+  if (!isAllowedOrigin(origin)) return;
+  res.setHeader("Access-Control-Allow-Origin", origin);
+  res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type,Accept");
+  res.setHeader("Vary", "Origin");
+}
+
+function isAllowedOrigin(origin) {
+  if (!origin) return false;
+  try {
+    const { hostname, protocol } = new URL(origin);
+    return (
+      protocol === "https:" &&
+      (hostname === "patrickfischerksa.github.io" ||
+        hostname === "matura-korrekturplattform.onrender.com")
+    );
+  } catch {
+    return false;
+  }
 }
 
 function safeFileName(value) {

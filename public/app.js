@@ -7,6 +7,7 @@ const state = {
 };
 
 const DEFAULT_TASK_GROUP = "Matura-Aufgaben 2026";
+const DEFAULT_API_ORIGIN = "https://matura-korrekturplattform.onrender.com";
 
 const els = {
   status: document.querySelector("#status"),
@@ -158,13 +159,14 @@ async function exportDocx() {
   if (!state.evaluation) return;
   setStatus("Word-Datei wird erstellt ...");
   try {
-    const response = await fetch("/api/export", {
+    const requestUrl = apiUrl("/api/export");
+    const response = await fetch(requestUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ evaluation: state.evaluation }),
     });
     if (!response.ok) {
-      const payload = await readResponsePayload(response, "/api/export");
+      const payload = await readResponsePayload(response, requestUrl);
       throw new Error(payload.error || "Export fehlgeschlagen.");
     }
     const blob = await response.blob();
@@ -231,7 +233,8 @@ function updateTextStats() {
 }
 
 async function requestJson(url, options = {}) {
-  const response = await fetch(url, {
+  const requestUrl = apiUrl(url);
+  const response = await fetch(requestUrl, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -239,7 +242,7 @@ async function requestJson(url, options = {}) {
     },
     ...options,
   });
-  const payload = await readResponsePayload(response, url);
+  const payload = await readResponsePayload(response, requestUrl);
   if (!response.ok) {
     const error = new Error(payload.error || "Anfrage fehlgeschlagen.");
     if (payload.prompt) error.prompt = payload.prompt;
@@ -257,10 +260,27 @@ async function readResponsePayload(response, url) {
     const contentType = response.headers.get("content-type") || "";
     const isHtml = contentType.includes("text/html") || /^\s*<!doctype html/i.test(text) || /^\s*<html/i.test(text);
     const message = isHtml
-      ? `Die API ${url} liefert HTML statt JSON. Starte die App ueber den Node-Server (npm start) und oeffne http://127.0.0.1:3031; auf rein statischem Hosting funktionieren die /api-Routen nicht.`
+      ? "Die Server-API ist gerade nicht erreichbar. Bitte die Seite neu laden; falls das wieder passiert, ist das Deployment noch nicht fertig gestartet."
       : `Die API ${url} liefert keine gueltige JSON-Antwort.`;
     throw new Error(message);
   }
+}
+
+function apiUrl(path) {
+  const origin = apiOrigin();
+  return origin ? `${origin}${path}` : path;
+}
+
+function apiOrigin() {
+  if (typeof window.MATURA_API_ORIGIN === "string" && window.MATURA_API_ORIGIN.trim()) {
+    return window.MATURA_API_ORIGIN.trim().replace(/\/$/, "");
+  }
+  const hostname = window.location.hostname;
+  const runsOnApiServer =
+    hostname === "127.0.0.1" ||
+    hostname === "localhost" ||
+    hostname.endsWith(".onrender.com");
+  return runsOnApiServer ? "" : DEFAULT_API_ORIGIN;
 }
 
 function toBase64(file) {
