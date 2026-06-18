@@ -104,9 +104,9 @@ async function handleFileUpload(event) {
   setStatus("Dokument wird gelesen ...");
   try {
     const fileBase64 = await toBase64(file);
-    const payload = await requestJson("/api/docx/read", {
+    const payload = await requestJson("/api/documents/read", {
       method: "POST",
-      body: JSON.stringify({ fileName: file.name, fileBase64 }),
+      body: JSON.stringify({ fileName: file.name, mimeType: file.type, fileBase64 }),
     });
     state.fileName = payload.fileName;
     els.fileName.textContent = payload.fileName;
@@ -163,7 +163,7 @@ async function exportDocx() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `${(state.evaluation.fileName || "maturaufsatz").replace(/\.docx$/i, "")}-korrektur.docx`;
+    link.download = `${(state.evaluation.fileName || "maturaufsatz").replace(/\.(docx|pdf)$/i, "")}-korrektur.docx`;
     link.click();
     URL.revokeObjectURL(url);
     setStatus("Word-Export erstellt");

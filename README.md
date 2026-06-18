@@ -2,7 +2,7 @@
 
 Kleine Node-App fuer Deutsch-Maturaufsaetze:
 
-- `.docx` hochladen und Aufsatztext extrahieren
+- `.docx` oder `.pdf` hochladen und Aufsatztext extrahieren
 - Aufgabenstellung und Textsorte aus den Matura-Aufgaben 2026 auswaehlen
 - strenge KI-Korrektur mit Fehlerzaehlung
 - sprachliche Teilnote nach der hinterlegten Excel-Skala berechnen

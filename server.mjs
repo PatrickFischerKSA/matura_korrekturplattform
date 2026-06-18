@@ -2,7 +2,7 @@ import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { createCorrectionDocx, countWords, extractDocxText } from "./src/docx.mjs";
+import { createCorrectionDocx, countWords, extractDocumentText } from "./src/docx.mjs";
 import { evaluateEssay } from "./src/evaluator.mjs";
 import { TASKS } from "./src/tasks.mjs";
 
@@ -28,8 +28,8 @@ const server = createServer(async (req, res) => {
     if (req.method === "GET" && url.pathname === "/api/tasks") {
       return sendJson(res, { tasks: TASKS });
     }
-    if (req.method === "POST" && url.pathname === "/api/docx/read") {
-      return handleDocxRead(req, res);
+    if (req.method === "POST" && (url.pathname === "/api/documents/read" || url.pathname === "/api/docx/read")) {
+      return handleDocumentRead(req, res);
     }
     if (req.method === "POST" && url.pathname === "/api/evaluate") {
       return handleEvaluate(req, res);
@@ -52,12 +52,16 @@ server.listen(port, host, () => {
   console.log(`Matura-Korrekturplattform laeuft unter http://${host}:${port}`);
 });
 
-async function handleDocxRead(req, res) {
+async function handleDocumentRead(req, res) {
   const body = await readJsonBody(req, 18 * 1024 * 1024);
   const buffer = decodeBase64(body.fileBase64);
-  const text = await extractDocxText(buffer);
+  const text = await extractDocumentText({
+    buffer,
+    fileName: body.fileName,
+    mimeType: body.mimeType,
+  });
   sendJson(res, {
-    fileName: String(body.fileName || "aufsatz.docx"),
+    fileName: String(body.fileName || "aufsatz"),
     text,
     wordCount: countWords(text),
   });
@@ -82,7 +86,7 @@ async function handleExport(req, res) {
     return sendJson(res, { error: "Es liegt noch keine Korrektur fuer den Export vor." }, 400);
   }
   const buffer = await createCorrectionDocx(body.evaluation);
-  const safeName = safeFileName(body.evaluation.fileName || "maturaufsatz").replace(/\.docx$/i, "");
+  const safeName = safeFileName(body.evaluation.fileName || "maturaufsatz").replace(/\.(docx|pdf)$/i, "");
   res.writeHead(200, {
     "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     "Content-Disposition": `attachment; filename="${safeName}-korrektur.docx"`,

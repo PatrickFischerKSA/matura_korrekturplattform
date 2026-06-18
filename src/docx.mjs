@@ -1,4 +1,5 @@
 import JSZip from "jszip";
+import { PDFParse } from "pdf-parse";
 
 const WORD_NAMESPACE =
   'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"';
@@ -14,9 +15,60 @@ export async function extractDocxText(buffer) {
   return xmlToText(documentXml);
 }
 
+export async function extractPdfText(buffer) {
+  const parser = new PDFParse({ data: buffer });
+  try {
+    const result = await parser.getText();
+    const text = normalizeExtractedText(result.text);
+    if (!text) {
+      throw new Error(
+        "Aus dem PDF konnte kein Text extrahiert werden. Bitte ein PDF mit markierbarem Text oder eine DOCX-Datei hochladen.",
+      );
+    }
+    return text;
+  } catch (error) {
+    if (error?.message?.includes("kein Text extrahiert")) throw error;
+    throw new Error("Die PDF-Datei konnte nicht gelesen werden. Bitte ein ungeschuetztes PDF mit Textinhalt hochladen.");
+  } finally {
+    await parser.destroy();
+  }
+}
+
+export async function extractDocumentText({ buffer, fileName = "", mimeType = "" }) {
+  const kind = detectDocumentKind(fileName, mimeType);
+  if (kind === "docx") {
+    return extractDocxText(buffer);
+  }
+  if (kind === "pdf") {
+    return extractPdfText(buffer);
+  }
+  throw new Error("Bitte eine DOCX- oder PDF-Datei hochladen.");
+}
+
 export function countWords(text) {
   const matches = String(text || "").match(/\b[\p{L}\p{N}][\p{L}\p{N}'’-]*\b/gu);
   return matches ? matches.length : 0;
+}
+
+function detectDocumentKind(fileName, mimeType) {
+  const normalizedName = String(fileName || "").toLowerCase();
+  const normalizedMime = String(mimeType || "").toLowerCase();
+  if (normalizedName.endsWith(".docx") || normalizedMime.includes("wordprocessingml.document")) {
+    return "docx";
+  }
+  if (normalizedName.endsWith(".pdf") || normalizedMime === "application/pdf") {
+    return "pdf";
+  }
+  return "";
+}
+
+function normalizeExtractedText(text) {
+  return String(text || "")
+    .replace(/\r\n?/g, "\n")
+    .replace(/^-- \d+ of \d+ --$/gm, "")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
 }
 
 export async function createCorrectionDocx(evaluation) {
