@@ -109,10 +109,7 @@ async function serveStatic(pathname, res) {
   }
   try {
     const content = await readFile(filePath);
-    res.writeHead(200, {
-      "Content-Type": MIME_TYPES[extname(filePath)] || "application/octet-stream",
-      "Cache-Control": cacheControlFor(filePath),
-    });
+    res.writeHead(200, { "Content-Type": MIME_TYPES[extname(filePath)] || "application/octet-stream" });
     res.end(content);
   } catch {
     sendJson(res, { error: "Nicht gefunden." }, 404);
@@ -184,14 +181,6 @@ function isAllowedOrigin(origin) {
   } catch {
     return false;
   }
-}
-
-function cacheControlFor(filePath) {
-  const extension = extname(filePath);
-  if (extension === ".html" || extension === ".js" || extension === ".css") {
-    return "no-cache, no-store, must-revalidate";
-  }
-  return "public, max-age=3600";
 }
 
 function safeFileName(value) {
