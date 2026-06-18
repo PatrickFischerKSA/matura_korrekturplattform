@@ -33,6 +33,10 @@ const server = createServer(async (req, res) => {
     if (isReadRequest(req) && url.pathname === "/api/tasks") {
       return sendJson(res, { tasks: TASKS });
     }
+    if (req.method === "POST" && url.pathname === "/api/ping") {
+      await readJsonBody(req, 64 * 1024);
+      return sendJson(res, { ok: true });
+    }
     if (req.method === "POST" && (url.pathname === "/api/documents/read" || url.pathname === "/api/docx/read")) {
       return handleDocumentRead(req, res);
     }
@@ -116,29 +120,29 @@ async function serveStatic(pathname, res) {
   }
 }
 
-function readJsonBody(req, limit) {
-  return new Promise((resolveBody, reject) => {
-    const chunks = [];
-    let size = 0;
-    req.on("data", (chunk) => {
+async function readJsonBody(req, limit) {
+  const chunks = [];
+  let size = 0;
+  try {
+    for await (const chunk of req) {
       size += chunk.length;
       if (size > limit) {
-        reject(Object.assign(new Error("Die Datei ist zu gross."), { statusCode: 413 }));
         req.destroy();
-        return;
+        throw Object.assign(new Error("Die Datei ist zu gross."), { statusCode: 413 });
       }
       chunks.push(chunk);
-    });
-    req.on("end", () => {
-      try {
-        const raw = Buffer.concat(chunks).toString("utf8");
-        resolveBody(raw ? JSON.parse(raw) : {});
-      } catch {
-        reject(Object.assign(new Error("Ungueltiges JSON."), { statusCode: 400 }));
-      }
-    });
-    req.on("error", reject);
-  });
+    }
+  } catch (error) {
+    if (error.statusCode) throw error;
+    throw Object.assign(new Error("Die Anfrage konnte nicht gelesen werden."), { statusCode: 400 });
+  }
+
+  try {
+    const raw = Buffer.concat(chunks).toString("utf8");
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    throw Object.assign(new Error("Ungueltiges JSON."), { statusCode: 400 });
+  }
 }
 
 function decodeBase64(value) {
