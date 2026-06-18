@@ -21,14 +21,16 @@ export async function extractPdfText(buffer) {
     const result = await parser.getText();
     const text = normalizeExtractedText(result.text);
     if (!text) {
-      throw new Error(
+      throw Object.assign(new Error(
         "Aus dem PDF konnte kein Text extrahiert werden. Bitte ein PDF mit markierbarem Text oder eine DOCX-Datei hochladen.",
-      );
+      ), { statusCode: 422 });
     }
     return text;
   } catch (error) {
     if (error?.message?.includes("kein Text extrahiert")) throw error;
-    throw new Error("Die PDF-Datei konnte nicht gelesen werden. Bitte ein ungeschuetztes PDF mit Textinhalt hochladen.");
+    throw Object.assign(new Error(
+      "Die PDF-Datei konnte nicht gelesen werden. Bitte ein ungeschuetztes PDF mit Textinhalt hochladen.",
+    ), { statusCode: 400 });
   } finally {
     await parser.destroy();
   }

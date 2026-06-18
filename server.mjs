@@ -22,10 +22,10 @@ const MIME_TYPES = {
 const server = createServer(async (req, res) => {
   try {
     const url = new URL(req.url || "/", `http://${req.headers.host}`);
-    if (req.method === "GET" && url.pathname === "/healthz") {
+    if (isReadRequest(req) && url.pathname === "/healthz") {
       return sendJson(res, { ok: true });
     }
-    if (req.method === "GET" && url.pathname === "/api/tasks") {
+    if (isReadRequest(req) && url.pathname === "/api/tasks") {
       return sendJson(res, { tasks: TASKS });
     }
     if (req.method === "POST" && (url.pathname === "/api/documents/read" || url.pathname === "/api/docx/read")) {
@@ -37,7 +37,7 @@ const server = createServer(async (req, res) => {
     if (req.method === "POST" && url.pathname === "/api/export") {
       return handleExport(req, res);
     }
-    if (req.method === "GET") {
+    if (isReadRequest(req)) {
       return serveStatic(url.pathname, res);
     }
     sendJson(res, { error: "Nicht gefunden." }, 404);
@@ -149,6 +149,10 @@ function sendJson(res, payload, status = 200) {
     "Content-Length": Buffer.byteLength(body),
   });
   res.end(body);
+}
+
+function isReadRequest(req) {
+  return req.method === "GET" || req.method === "HEAD";
 }
 
 function safeFileName(value) {

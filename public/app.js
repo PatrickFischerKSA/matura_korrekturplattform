@@ -40,7 +40,12 @@ init();
 
 async function init() {
   bindEvents();
-  await loadTasks();
+  try {
+    await loadTasks();
+  } catch (error) {
+    renderError(error);
+    setStatus(error.message, true);
+  }
   updateTextStats();
 }
 
@@ -158,7 +163,10 @@ async function exportDocx() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ evaluation: state.evaluation }),
     });
-    if (!response.ok) throw new Error((await response.json()).error || "Export fehlgeschlagen.");
+    if (!response.ok) {
+      const payload = await readResponsePayload(response, "/api/export");
+      throw new Error(payload.error || "Export fehlgeschlagen.");
+    }
     const blob = await response.blob();
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -224,16 +232,35 @@ function updateTextStats() {
 
 async function requestJson(url, options = {}) {
   const response = await fetch(url, {
-    headers: { "Content-Type": "application/json", ...(options.headers || {}) },
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      ...(options.headers || {}),
+    },
     ...options,
   });
-  const payload = await response.json();
+  const payload = await readResponsePayload(response, url);
   if (!response.ok) {
     const error = new Error(payload.error || "Anfrage fehlgeschlagen.");
     if (payload.prompt) error.prompt = payload.prompt;
     throw error;
   }
   return payload;
+}
+
+async function readResponsePayload(response, url) {
+  const text = await response.text();
+  if (!text.trim()) return {};
+  try {
+    return JSON.parse(text);
+  } catch {
+    const contentType = response.headers.get("content-type") || "";
+    const isHtml = contentType.includes("text/html") || /^\s*<!doctype html/i.test(text) || /^\s*<html/i.test(text);
+    const message = isHtml
+      ? `Die API ${url} liefert HTML statt JSON. Starte die App ueber den Node-Server (npm start) und oeffne http://127.0.0.1:3031; auf rein statischem Hosting funktionieren die /api-Routen nicht.`
+      : `Die API ${url} liefert keine gueltige JSON-Antwort.`;
+    throw new Error(message);
+  }
 }
 
 function toBase64(file) {
