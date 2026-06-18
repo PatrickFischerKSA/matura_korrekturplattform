@@ -10,6 +10,7 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const publicDir = resolve(__dirname, "public");
 const host = process.env.HOST || (process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1");
 const port = Number(process.env.PORT || 3031);
+const appVersion = process.env.RENDER_GIT_COMMIT || process.env.APP_VERSION || "local";
 
 const MIME_TYPES = {
   ".html": "text/html; charset=utf-8",
@@ -28,7 +29,7 @@ const server = createServer(async (req, res) => {
     }
     const url = new URL(req.url || "/", `http://${req.headers.host}`);
     if (isReadRequest(req) && url.pathname === "/healthz") {
-      return sendJson(res, { ok: true });
+      return sendJson(res, { ok: true, version: appVersion });
     }
     if (isReadRequest(req) && url.pathname === "/api/tasks") {
       return sendJson(res, { tasks: TASKS });
