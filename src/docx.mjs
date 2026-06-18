@@ -16,6 +16,11 @@ export async function extractDocxText(buffer) {
 }
 
 export async function extractPdfText(buffer) {
+  if (!hasLikelyTextLayer(buffer)) {
+    throw Object.assign(new Error(
+      "Aus dem PDF konnte kein Text extrahiert werden. Bitte ein PDF mit markierbarem Text oder eine DOCX-Datei hochladen.",
+    ), { statusCode: 422 });
+  }
   const parser = new PDFParse({ data: buffer });
   try {
     const result = await parser.getText();
@@ -71,6 +76,11 @@ function normalizeExtractedText(text) {
     .replace(/[ \t]+\n/g, "\n")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
+}
+
+function hasLikelyTextLayer(buffer) {
+  const header = Buffer.from(buffer).subarray(0, 2 * 1024 * 1024).toString("latin1");
+  return /\/Font\b|\/ToUnicode\b|BT\s/i.test(header);
 }
 
 export async function createCorrectionDocx(evaluation) {
