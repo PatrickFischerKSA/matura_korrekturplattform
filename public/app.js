@@ -248,6 +248,9 @@ async function requestJson(url, options = {}) {
     if (payload.prompt) error.prompt = payload.prompt;
     throw error;
   }
+  if (payload.ok === false) {
+    throw new Error(payload.error || "Anfrage fehlgeschlagen.");
+  }
   return payload;
 }
 

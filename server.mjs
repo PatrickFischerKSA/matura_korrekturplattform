@@ -63,18 +63,26 @@ server.listen(port, host, () => {
 });
 
 async function handleDocumentRead(req, res) {
-  const body = await readJsonBody(req, 18 * 1024 * 1024);
-  const buffer = decodeBase64(body.fileBase64);
-  const text = await extractDocumentText({
-    buffer,
-    fileName: body.fileName,
-    mimeType: body.mimeType,
-  });
-  sendJson(res, {
-    fileName: String(body.fileName || "aufsatz"),
-    text,
-    wordCount: countWords(text),
-  });
+  try {
+    const body = await readJsonBody(req, 18 * 1024 * 1024);
+    const buffer = decodeBase64(body.fileBase64);
+    const text = await extractDocumentText({
+      buffer,
+      fileName: body.fileName,
+      mimeType: body.mimeType,
+    });
+    sendJson(res, {
+      ok: true,
+      fileName: String(body.fileName || "aufsatz"),
+      text,
+      wordCount: countWords(text),
+    });
+  } catch (error) {
+    sendJson(res, {
+      ok: false,
+      error: error.message || "Das Dokument konnte nicht gelesen werden.",
+    });
+  }
 }
 
 async function handleEvaluate(req, res) {
