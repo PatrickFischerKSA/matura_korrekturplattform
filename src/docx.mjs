@@ -88,7 +88,7 @@ export async function createCorrectionDocx(evaluation) {
   zip.file("[Content_Types].xml", contentTypesXml());
   zip.folder("_rels").file(".rels", relsXml());
   const word = zip.folder("word");
-  word.file("document.xml", documentXml(evaluation));
+  word.file("document.xml", evaluation?.mode === "research-work" ? researchWorkDocumentXml(evaluation) : documentXml(evaluation));
   word.file("styles.xml", stylesXml());
   word.file("settings.xml", settingsXml());
   return zip.generateAsync({ type: "nodebuffer", compression: "DEFLATE" });
@@ -207,6 +207,50 @@ function documentXml(evaluation) {
     errors.length ? table(errorRows) : paragraph("Keine Fehlerliste vorhanden."),
     paragraph("Prioritäten für die Überarbeitung", "Heading1"),
     ...(revisions.length ? revisions.map((item) => bullet(item)) : [paragraph("Keine Angaben.")]),
+  ].join("");
+
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document ${WORD_NAMESPACE}><w:body>${body}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="708" w:footer="708" w:gutter="0"/></w:sectPr></w:body></w:document>`;
+}
+
+function researchWorkDocumentXml(evaluation) {
+  const score = evaluation.score || {};
+  const criteria = Array.isArray(evaluation.criteria) ? evaluation.criteria : [];
+  const strengths = Array.isArray(evaluation.strengths) ? evaluation.strengths : [];
+  const improvements = Array.isArray(evaluation.improvements) ? evaluation.improvements : [];
+
+  const sectionRows = [
+    ["Bereich", "Rohpunkte", "Gewichtete Punkte"],
+    ["Schriftliche Arbeit", `${score.writtenRaw ?? 0} / 60`, ""],
+    ["Lern- und Arbeitsprozess", `${score.processRaw ?? 0} / 10`, ""],
+    ["Arbeit + Prozess", `${score.workAndProcessRaw ?? 0} / 70`, `${score.workWeighted ?? 0} / 66.67`],
+    ["Mündliche Präsentation", `${score.presentationRaw ?? 0} / 30`, `${score.presentationWeighted ?? 0} / 33.33`],
+    ["Gesamtwertung", `${score.total ?? 0} / 100`, `Note ${score.grade ?? ""}`],
+  ];
+  const criterionRows = [
+    ["Kriterium", "Punkte", "Kommentar", "Begründung"],
+    ...criteria.map((criterion) => [
+      `${criterion.sectionTitle}: ${criterion.title}`,
+      `${criterion.points} / ${criterion.max}`,
+      criterion.comment || "",
+      criterion.reason || "",
+    ]),
+  ];
+  const body = [
+    paragraph("Kommentar zur Fach-, Matura- oder Fachmaturaarbeit", "Title"),
+    paragraph(evaluation.fileName ? `Dokument: ${evaluation.fileName}` : ""),
+    paragraph(evaluation.workType || "", "Heading1"),
+    paragraph(evaluation.researchQuestion ? `Fragestellung: ${evaluation.researchQuestion}` : ""),
+    paragraph(evaluation.methods ? `Methode(n): ${evaluation.methods}` : ""),
+    paragraph("Punkte und Note", "Heading1"),
+    table(sectionRows),
+    paragraph("Kriterienkommentare", "Heading1"),
+    table(criterionRows),
+    paragraph("Zusammenfassende Beurteilung", "Heading1"),
+    paragraph(evaluation.summary || ""),
+    paragraph("Stärken der Arbeit", "Heading2"),
+    ...(strengths.length ? strengths.map((item) => bullet(item)) : [paragraph("Keine Angaben.")]),
+    paragraph("Wichtige Verbesserungsmöglichkeiten", "Heading2"),
+    ...(improvements.length ? improvements.map((item) => bullet(item)) : [paragraph("Keine Angaben.")]),
   ].join("");
 
   return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document ${WORD_NAMESPACE}><w:body>${body}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="708" w:footer="708" w:gutter="0"/></w:sectPr></w:body></w:document>`;

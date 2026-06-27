@@ -29,21 +29,29 @@
             </label>
 
             <label>
+              Modus
+              <select id="modeSelect">
+                <option value="essay">Maturaufsatz</option>
+                <option value="research-work">Matura-, Fach- oder Fachmaturaarbeit</option>
+              </select>
+            </label>
+
+            <label class="essay-only">
               Prüfungsserie
               <select id="taskGroupSelect"></select>
             </label>
 
-            <label>
+            <label class="essay-only">
               Aufgabenstellung
               <select id="taskSelect"></select>
             </label>
 
-            <label>
+            <label class="essay-only">
               Textsorte
               <select id="textTypeSelect"></select>
             </label>
 
-            <label>
+            <label class="essay-only">
               Klassenstufe
               <select id="levelSelect">
                 <option value="4">4. Gym / FMS</option>
@@ -63,9 +71,28 @@
               </select>
             </label>
 
-            <label class="toggle-row">
+            <label class="toggle-row essay-only">
               <span>Korrekturprogramm</span>
               <input id="correctionProgram" type="checkbox" checked />
+            </label>
+
+            <label class="work-only hidden">
+              Art der Arbeit
+              <select id="workTypeSelect">
+                <option value="facharbeit">Facharbeit</option>
+                <option value="matura">Maturaarbeit</option>
+                <option value="fachmatura">Fachmaturaarbeit</option>
+              </select>
+            </label>
+
+            <label class="work-only hidden">
+              Fragestellung
+              <textarea id="researchQuestion" class="small-textarea" placeholder="Fragestellung der Arbeit"></textarea>
+            </label>
+
+            <label class="work-only hidden">
+              Methode(n)
+              <textarea id="methodsInput" class="small-textarea" placeholder="z. B. Literaturrecherche, Interview, Umfrage, Analyse, Experiment"></textarea>
             </label>
 
             <div class="metric-row">
@@ -89,10 +116,11 @@
 
           <section class="task-panel">
             <div class="panel-heading">
-              <h2>Aufgabenbezug</h2>
+              <h2 id="contextPanelTitle">Aufgabenbezug</h2>
               <span id="selectedTaskBadge">Matura 2026</span>
             </div>
             <textarea id="taskPrompt"></textarea>
+            <div id="workRubricPanel" class="rubric-panel hidden"></div>
           </section>
         </section>
       </section>
@@ -126,10 +154,10 @@
           <table>
             <thead>
               <tr>
-                <th>Kategorie</th>
-                <th>Fundstelle</th>
-                <th>Korrektur</th>
-                <th>Zählung</th>
+                <th id="errorHeadCategory">Kategorie</th>
+                <th id="errorHeadQuote">Fundstelle</th>
+                <th id="errorHeadCorrection">Korrektur</th>
+                <th id="errorHeadWeight">Zählung</th>
               </tr>
             </thead>
             <tbody id="errorTable">
@@ -140,6 +168,6 @@
       </section>
     </main>
 
-    <script type="module" src="/app.js?v=bc2d07e"></script>
+    <script type="module" src="/app.js?v=facharbeit-rubrik"></script>
   </body>
 </html>

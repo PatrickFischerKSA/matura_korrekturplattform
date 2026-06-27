@@ -4,6 +4,7 @@ import { extname, join, normalize, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createCorrectionDocx, countWords, extractDocumentText } from "./src/docx.mjs";
 import { evaluateEssay } from "./src/evaluator.mjs";
+import { evaluateResearchWork, RESEARCH_WORK_RUBRIC } from "./src/researchWork.mjs";
 import { TASKS } from "./src/tasks.mjs";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
@@ -34,6 +35,9 @@ const server = createServer(async (req, res) => {
     if (isReadRequest(req) && url.pathname === "/api/tasks") {
       return sendJson(res, { tasks: TASKS });
     }
+    if (isReadRequest(req) && url.pathname === "/api/research-work/rubric") {
+      return sendJson(res, { rubric: RESEARCH_WORK_RUBRIC });
+    }
     if (req.method === "POST" && url.pathname === "/api/ping") {
       await readJsonBody(req, 64 * 1024);
       return sendJson(res, { ok: true });
@@ -43,6 +47,9 @@ const server = createServer(async (req, res) => {
     }
     if (req.method === "POST" && url.pathname === "/api/evaluate") {
       return handleEvaluate(req, res);
+    }
+    if (req.method === "POST" && url.pathname === "/api/evaluate-work") {
+      return handleEvaluateWork(req, res);
     }
     if (req.method === "POST" && url.pathname === "/api/export") {
       return handleExport(req, res);
@@ -95,6 +102,21 @@ async function handleEvaluate(req, res) {
     correctionProgram: Boolean(body.correctionProgram),
     wordCount: Number(body.wordCount) || countWords(body.essayText),
   });
+  sendJson(res, { evaluation: result });
+}
+
+async function handleEvaluateWork(req, res) {
+  const body = await readJsonBody(req, 22 * 1024 * 1024);
+  if (!String(body.workText || "").trim()) {
+    return sendJson(res, { error: "Bitte zuerst eine Arbeit hochladen oder Text einfügen." }, 400);
+  }
+  if (!String(body.researchQuestion || "").trim()) {
+    return sendJson(res, { error: "Bitte die Fragestellung der Arbeit eintragen." }, 400);
+  }
+  if (!String(body.methods || "").trim()) {
+    return sendJson(res, { error: "Bitte die Methode oder Methoden der Arbeit eintragen." }, 400);
+  }
+  const result = await evaluateResearchWork(body);
   sendJson(res, { evaluation: result });
 }
 

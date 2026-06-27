@@ -165,6 +165,11 @@ input[type="number"] {
   padding: 0 10px;
 }
 
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
 select:focus,
 input:focus,
 textarea:focus,
@@ -182,8 +187,82 @@ textarea {
   line-height: 1.55;
 }
 
+.small-textarea {
+  min-height: 78px;
+  max-height: 110px;
+  margin-top: 0;
+  resize: vertical;
+}
+
+.hidden {
+  display: none !important;
+}
+
 #taskPrompt {
   font-size: 0.92rem;
+}
+
+.rubric-panel {
+  flex: 1;
+  min-height: 0;
+  margin-top: 12px;
+  overflow: auto;
+}
+
+.rubric-section {
+  border-top: 1px solid var(--line);
+  padding: 14px 0;
+}
+
+.rubric-section:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.rubric-section h3 {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.rubric-section h3 span {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.criterion-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 150px 62px;
+  gap: 12px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  padding: 10px;
+  background: #fbfcfd;
+}
+
+.criterion-row strong {
+  display: block;
+  margin-bottom: 3px;
+}
+
+.criterion-row small {
+  display: block;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.criterion-score {
+  text-align: right;
+  font-weight: 900;
+}
+
+.criterion-comment {
+  border-top: 1px solid var(--line);
+  margin-top: 8px;
+  padding-top: 8px;
 }
 
 .file-drop {
