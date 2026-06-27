@@ -7,13 +7,13 @@ export const RUBRIC = {
   },
   criteria: {
     content:
-      "Gesamtidee, gedankliche Auseinandersetzung mit dem gewaehlten Thema, gedankliche Originalitaet, Umfang des Wissens, interne Stimmigkeit, Richtigkeit von Tatsachen",
+      "Gesamtidee, gedankliche Auseinandersetzung mit dem gewählten Thema, gedankliche Originalität, Umfang des Wissens, interne Stimmigkeit, Richtigkeit von Tatsachen",
     structure:
-      "Innere und aeussere Gliederung, logische Abfolge der Denkschritte, textsortengemaesse Textstruktur",
+      "Innere und äußere Gliederung, logische Abfolge der Denkschritte, textsortengemäße Textstruktur",
     style:
-      "Richtigkeit der Sprachmittel (Wortschatz, Syntax, Kohaesion), Angemessenheit der Sprachmittel, stilistische bzw. rhetorische Eigenstaendigkeit, Rezipientenfuehrung",
+      "Richtigkeit der Sprachmittel (Wortschatz, Syntax, Kohäsion), Angemessenheit der Sprachmittel, stilistische bzw. rhetorische Eigenständigkeit, Rezipientenführung",
     correctness:
-      "Orthografie, Interpunktion, Grammatik; Kommafehler zaehlen als halbe Fehler",
+      "Orthografie, Interpunktion, Grammatik; Kommafehler zählen als halbe Fehler",
   },
 };
 

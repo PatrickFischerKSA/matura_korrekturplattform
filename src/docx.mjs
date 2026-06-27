@@ -163,7 +163,7 @@ function documentXml(evaluation) {
   const revisions = Array.isArray(evaluation.revisions) ? evaluation.revisions : [];
 
   const errorRows = [
-    ["Kategorie", "Fundstelle", "Korrektur", "Erklaerung", "Zaehlung"],
+    ["Kategorie", "Fundstelle", "Korrektur", "Erklärung", "Zählung"],
     ...errors.map((error) => [
       error.category || "Fehler",
       error.quote || "",
@@ -190,7 +190,7 @@ function documentXml(evaluation) {
     paragraph("Noten", "Heading1"),
     table(gradeRows),
     paragraph(
-      `Fehler: ${counts.errorCount ?? 0} | Woerter: ${counts.wordCount ?? 0} | Fehler pro 200 Woerter: ${counts.errorsPer200 ?? 0}`,
+      `Fehler: ${counts.errorCount ?? 0} | Wörter: ${counts.wordCount ?? 0} | Fehler pro 200 Wörter: ${counts.errorsPer200 ?? 0}`,
     ),
     paragraph("Kommentar", "Heading1"),
     paragraph("Inhalt", "Heading2"),
@@ -205,7 +205,7 @@ function documentXml(evaluation) {
     paragraph(comments.overall || evaluation.summary || ""),
     paragraph("Fehlerliste", "Heading1"),
     errors.length ? table(errorRows) : paragraph("Keine Fehlerliste vorhanden."),
-    paragraph("Prioritaeten fuer die Ueberarbeitung", "Heading1"),
+    paragraph("Prioritäten für die Überarbeitung", "Heading1"),
     ...(revisions.length ? revisions.map((item) => bullet(item)) : [paragraph("Keine Angaben.")]),
   ].join("");
 
